@@ -3,10 +3,12 @@ package com.example.parties.DAO;
 import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.example.parties.Entities.Game;
 import com.example.parties.Repositories.GameRepository;
 
+@Repository
 public class GameDAO implements IGameDAO {
     @Autowired
     private GameRepository gameRepository;
@@ -27,9 +29,6 @@ public class GameDAO implements IGameDAO {
 
     @Override
     public Game createGame(Game game) {
-        if (gameRepository.existsById(game.getId())) {
-            throw new RuntimeException("Game already exists");
-        }
         return gameRepository.save(game);
     }
 

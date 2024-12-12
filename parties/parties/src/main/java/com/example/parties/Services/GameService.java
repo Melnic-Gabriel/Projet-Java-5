@@ -10,7 +10,9 @@ import com.example.parties.Repositories.ParticipationRepository;
 
 @Service
 public class GameService {
+    @Autowired
     private GameRepository gameRepository;
+    @Autowired
     private GameDAO gameDAO;
 
     @Autowired
