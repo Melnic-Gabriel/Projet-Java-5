@@ -57,8 +57,8 @@ public class PlayerController {
         playerService.addFriend(idPlayer, idFriend);
     }
 
-    @DeleteMapping("/deleteFriend")
-    public void deleteFriend(@RequestBody Long idPlayer, @RequestBody Long idFriend) {
+    @DeleteMapping("/deleteFriend/{idPlayer}/{idFriend}")
+    public void deleteFriend(@PathVariable Long idPlayer, @PathVariable Long idFriend) {
         playerService.deleteFriend(idPlayer, idFriend);
     }
 

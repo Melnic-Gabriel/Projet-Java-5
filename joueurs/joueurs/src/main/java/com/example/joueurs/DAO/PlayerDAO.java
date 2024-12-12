@@ -8,12 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import com.example.joueurs.Entities.Friend;
 import com.example.joueurs.Entities.Player;
+import com.example.joueurs.Repositories.FriendRepository;
 import com.example.joueurs.Repositories.PlayerRepository;
 
 @Repository
 public class PlayerDAO implements IPlayerDAO {
     @Autowired
     private PlayerRepository playerRepository;
+    @Autowired
+    private FriendRepository friendRepository;
 
     @Override
     public Player getPlayerById(Long id) {
@@ -64,31 +67,19 @@ public class PlayerDAO implements IPlayerDAO {
                 + player.getLevel();
     }
 
-    /*
-     * @Override
-     * public Friend addFriend(Long idPlayer, Friend friend) {
-     * Player player = playerRepository.findById(idPlayer).orElseThrow(() -> new
-     * RuntimeException("Player not found"));
-     * player.getFriends().add(friend);
-     * playerRepository.save(player);
-     * return friend;
-     * 
-     * }
-     */
-
     @Override
     public Friend addFriend(Long idPlayer, Long idFriend) {
-        Player player = playerRepository.findById(idPlayer).orElseThrow(() -> new RuntimeException("Player not found"));
+        Player player = playerRepository.findById(idPlayer)
+                .orElseThrow(() -> new RuntimeException("Player not found with ID: " + idPlayer));
+
         Player friendPlayer = playerRepository.findById(idFriend)
-                .orElseThrow(() -> new RuntimeException("Friend not found"));
+                .orElseThrow(() -> new RuntimeException("Friend not found with ID: " + idFriend));
 
-        // Create a Friend object (or link them in a different way depending on your
-        // model)
         Friend friend = new Friend();
-        friend.setId(idFriend); // Assuming Friend has an id field
+        friend.setPlayer(player);
+        friend.setFriend(friendPlayer);
 
-        player.getFriends().add(friend); // Add friend to player's friends list
-        playerRepository.save(player); // Save player with updated friend list
+        friendRepository.save(friend);
         return friend;
     }
 
@@ -101,6 +92,4 @@ public class PlayerDAO implements IPlayerDAO {
         player.getFriends().remove(friend);
         playerRepository.save(player);
     }
-
-    // tous les get et set en faisant joueurRepository.save(joueur)
 }
